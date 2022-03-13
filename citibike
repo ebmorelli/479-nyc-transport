@@ -1,0 +1,25 @@
+```{r}
+bikes = read.csv("https://uwmadison.box.com/shared/static/uhx5qompigep8saswh5wj98qyd0mm9wf.csv")
+```
+
+```{r}
+library(tidyverse)
+library(dplyr)
+```
+
+```{r}
+bikes = subset(bikes, select = -c(starttime, stoptime, start.station.id, start.station.name, end.station.id, end.station.name, bikeid, birth.year, gender))
+```
+
+```{r}
+bikes = rename(bikes, PU_lon = start.station.longitude, PU_lat = start.station.latitude, DO_lon = end.station.longitude, DO_lat = end.station.latitude, Time = tripduration)
+```
+
+```{r}
+bikes["Cost"] <- NA
+bikes$Cost <- ifelse(bikes$usertype == "Subscriber", 0.50, 3.50)
+```
+
+```{r}
+bikes = bikes[! (bikes$Time >= 21600),]
+```
