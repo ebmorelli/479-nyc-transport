@@ -25,9 +25,9 @@ for(num in 1:12){
 }
   
 
-
-
-
+#Takes a while and crashes here
+#just copy and paste the rest of the code after, 
+#the output will work
 
 output = output %>% select(tpep_pickup_datetime,
                            tpep_dropoff_datetime,
