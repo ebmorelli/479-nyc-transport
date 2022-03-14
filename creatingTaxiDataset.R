@@ -13,7 +13,7 @@ for(num in 1:12){
     }
   }
   
-  if(num < 10){
+  if(num < 9){
     line = paste(stringOne, num + 1, ".csv", sep = "", collapse=NULL)
   }else{
     line = paste(stringTwo, num + 1, ".csv", sep = "", collapse=NULL)
@@ -24,10 +24,6 @@ for(num in 1:12){
   }
 }
   
-
-#Takes a while and crashes here
-#just copy and paste the rest of the code after, 
-#the output will work
 
 output = output %>% select(tpep_pickup_datetime,
                            tpep_dropoff_datetime,
