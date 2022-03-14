@@ -1,0 +1,69 @@
+---
+title: "Citi Bike Data"
+author: "Owen Jennings"
+date: "3/13/2022"
+output: html_document
+---
+
+
+```{r}
+library(geosphere)
+library(tidyverse)
+
+bikes = read_csv("https://uwmadison.box.com/shared/static/uhx5qompigep8saswh5wj98qyd0mm9wf.csv")
+bikes = bikes %>% select(starttime,
+                         stoptime,
+                         `start station id`,
+                         `start station name`,
+                         `start station longitude`,
+                         `start station latitude`,
+                         `end station id`,
+                         `end station name`,
+                         `end station longitude`,
+                         `end station latitude`,
+                         bikeid, `birth year`,
+                         tripduration,
+                         gender,
+                         usertype) %>%
+  rename(startTime = starttime,
+         stopTime = stoptime,
+         startStationID = `start station id`,
+         startStationName = `start station name`,
+         startLongitude = `start station longitude`,
+         startLatitude = `start station latitude`,
+         endStationID =  `end station id`,
+         endStationName = `end station name`,
+         endLongitude = `end station longitude`,
+         endLatitude = `end station latitude`,
+         bikeID = bikeid,
+         birthYear = `birth year`)
+
+bikes = bikes %>% mutate(Cost = 0,
+                         distance = 0,
+                         tripduration = tripduration / 60,
+                         startLongitude = as.numeric(startLongitude),
+                         startLatitude = as.numeric(startLatitude),
+                         endLongitude = as.numeric(endLongitude),
+                         endLatitude = as.numeric(endLatitude))
+
+for(i in 1:length(bikes$startTime)){
+  if(bikes$usertype[i] == "Customer"){
+    if(bikes$tripduration[i] <= 30){
+      bikes$Cost[i] = 3.99
+    }else{
+      bikes$Cost[i] = (bikes$tripduration[i] - 30) * 0.23 + 3.99
+    }
+  }
+ 
+  bikes$distance[i] = distm(c(bikes$startLongitude[i], bikes$startLatitude[i]),
+                            c(bikes$endLongitude[i], bikes$endLatitude[i]),
+                            fun = distHaversine)
+}
+#converting meters to miles
+bikes = bikes %>% mutate(distance = distance / 1609.34)
+```
+
+
+
+
+
