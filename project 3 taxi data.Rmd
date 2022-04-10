@@ -43,6 +43,16 @@ ggplot(data=taxis, aes(x=pickupTime, y=cost_per_mile)) + geom_point()
 class(taxis$pickupTime)
 ```
 
+#Take a look at this code, is this what you're trying to do?
+#taxiHours = taxis %>% 
+#  drop_na(passengerCount) %>%
+#  mutate(starthour = hour(pickupTime)) %>%
+#  group_by(starthour) %>%
+#  summarize(amount = mean(totalAmount), apm = mean(totalAmount) / mean(totalDistance)) %>%
+#  filter(apm < 1000000, apm > 0)
+
+#ggplot(taxiHours) +
+#  geom_bar(aes(x = starthour, y = apm),stat="identity")
 
 
 
