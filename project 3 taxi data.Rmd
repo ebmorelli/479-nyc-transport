@@ -1,0 +1,49 @@
+---
+title: "project part 3"
+author: "Owen Jennings"
+date: "4/7/2022"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(lubridate)
+
+```
+
+```{r}
+taxis = read.csv("https://github.com/ebmorelli/479-nyc-transport/raw/main/taxis.csv")
+
+```
+
+```{r}
+
+taxis <- taxis %>% 
+  mutate(cost_per_mile = totalAmount/totalDistance) %>% 
+  drop_na()
+
+taxis = taxis[taxis$totalDistance != 0, ]
+taxis <- subset(taxis, taxis$cost_per_mile >1 ) 
+
+```
+
+```{r}
+taxis = sample_n(taxis, 2000)
+```
+
+```{r}
+taxis$pickupTime <- format(as.POSIXct(taxis$pickupTime), format='%H:%M:%S')
+```
+
+```{r}
+ggplot(data=taxis, aes(x=pickupTime, y=cost_per_mile)) + geom_point() 
+```
+
+```{r}
+class(taxis$pickupTime)
+```
+
+
+
+
+
