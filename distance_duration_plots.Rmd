@@ -1,0 +1,94 @@
+---
+title: "distance_duration_plots"
+author: "Eddie Morelli"
+date: "April 10, 2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Packages and data prep
+
+```{r}
+library(readr)
+library(ggplot2)
+library(ggridges)
+library(tidyverse)
+bikes = read_csv("bikes.csv")
+taxis = read_csv("taxis.csv")
+
+```
+
+## Density Ridge Plot
+
+```{r}
+bikes2 = bikes %>%
+  filter(distance > 0) %>%
+  select(distance) %>%
+  mutate(Mode = "Bike")
+
+taxis2 = taxis %>%
+  rename(distance = totalDistance) %>%
+  filter(distance > 0) %>%
+  select(distance) %>%
+  mutate(Mode = "Taxi")
+
+
+rbind(bikes2, taxis2) %>%
+  ggplot(., aes(x=distance, y = Mode, fill=Mode)) +
+  geom_density_ridges(scale = 0.9) +
+  xlim(0, 10) +
+  labs(title = "Density of Distance Traveled by Mode of Transportation", subtitle = " ") +
+  xlab("Distance traveled (miles)") +
+  ylab(" ") +
+  theme_minimal()
+
+```
+
+## Median Duration vs. Distance
+
+```{r}
+bikesf = bikes %>%
+  filter(distance > 0) %>%
+  filter(tripduration < 180) %>%
+  filter(distance <= 5) %>%
+  mutate(bin = cut_width(distance, width=1, boundary=0)) %>%
+  group_by(bin) %>%
+  summarize(mean_dur = mean(tripduration), median_dur = median(tripduration)) %>%
+  mutate(Mode = "bike")
+bikesf$distance = 1:5
+
+taxisf = taxis %>%
+  mutate(duration = as.numeric(difftime(dropoffTime, pickupTime, units = "mins"))) %>%
+  filter(duration < 180) %>%
+  filter(totalDistance > 0) %>%
+  filter(totalDistance <= 30) %>%
+  mutate(bin = cut_width(totalDistance, width=1, boundary=0)) %>%
+  group_by(bin) %>%
+  summarize(mean_dur = mean(duration), median_dur = median(duration)) %>%
+  mutate(Mode = "taxi")
+taxisf$distance = 1:30
+
+rbind(bikesf, taxisf) %>%
+  ggplot(., aes(fill=Mode, x=distance, y=median_dur)) +
+  geom_bar(position="dodge", stat="identity") +
+  labs(title = "Median Trip Duration vs. Distance") +
+  xlab("Distance Traveled (miles), rounded up") +
+  ylab("Median Trip Duration (minutes)") +
+  scale_x_continuous(n.breaks = 5) +
+  coord_cartesian(xlim = c(0.75,5.25), ylim = c(0,30)) +
+  theme_minimal()
+
+taxisf %>%
+  ggplot(., aes(x=distance, y=median_dur)) +
+  geom_bar(position="dodge", stat="identity", fill="#00BFC4") +
+  labs(title = "Median Trip Duration vs. Distance", subtitle = "Taxis Only") +
+  xlab("Distance Traveled (miles), rounded up") +
+  ylab("Median Trip Duration (minutes)") + 
+  scale_x_continuous(n.breaks = 28) +
+  theme_minimal()
+
+```
+
