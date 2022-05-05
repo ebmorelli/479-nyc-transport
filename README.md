@@ -24,9 +24,17 @@ citibikedata.Rmd
   
 ## Graphs
 
-TimeOfDay.R,
+Density Of Distance Travelled by Mode of Transportation:
 
-LocationMap.R,
+Median Trip Duration vs Distance:
+
+Density of NYC Transportation over 24 Hour Period:
+
+New York City Prices Per Mile:
+
+Map of NYC Transportation: LocationMap.R
+
+TimeOfDay.R,
 
 Project 3 taxi data.Rmd,
 
