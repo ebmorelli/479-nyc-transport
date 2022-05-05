@@ -30,7 +30,7 @@ Median Trip Duration vs Distance: distance_duration_plots.Rmd
 
 Density of NYC Transportation over 24 Hour Period: TimeOfDay.R,
 
-New York City Prices Per Mile:
+New York City Prices Per Mile: PricePerMile.R
 
 Map of NYC Transportation: LocationMap.R
 
