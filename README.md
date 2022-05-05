@@ -24,9 +24,9 @@ citibikedata.Rmd
   
 ## Graphs
 
-Density Of Distance Travelled by Mode of Transportation:
+Density Of Distance Travelled by Mode of Transportation: distance_duration_plots.Rmd
 
-Median Trip Duration vs Distance:
+Median Trip Duration vs Distance: distance_duration_plots.Rmd
 
 Density of NYC Transportation over 24 Hour Period: TimeOfDay.R,
 
@@ -34,7 +34,4 @@ New York City Prices Per Mile:
 
 Map of NYC Transportation: LocationMap.R
 
-
-Project 3 taxi data.Rmd,
-
-distance_duration_plots.Rmd
+Project 3 taxi data.Rmd
